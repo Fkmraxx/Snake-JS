@@ -11,9 +11,8 @@
 
 ### <p align="center">You can change the color of the snake </p>
 ### <p align="center">Sound when eat </p>
-### <p align="center">3 difficulty modes (coming soon)  </p>
-### <p align="center">Random food (coming soon) </p>
-### <p align="center">Upcoming enhancements</p>
+### <p align="center">Score</p>
+
 
 ## Support : 
 
