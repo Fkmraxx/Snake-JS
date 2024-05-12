@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="static/style/style.css">
+</head>
+<body>
+    <header>
+        <h1 id="score">Score: 0</h1>
+        <label for="snake-color">Change Snake Color:</label>
+        <input type="color" id="snake-color" value="#008000">
+    </header>
+    <main>
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <button id="playButton">Play</button>
+        <audio id="eatSound" src="eat.mp3" preload="auto"></audio>
+        <div id="game-over-message" style="display: none;">Game Over! Your score is <span id="final-score"></span>. Press Play to restart.</div>
+    </main>
+    <script src="static/scripts/snake.js"></script>
+</body>
+</html>
