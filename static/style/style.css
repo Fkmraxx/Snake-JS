@@ -1,12 +1,26 @@
+/* Reset CSS rule to remove default margins and padding */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Variables */
+:root {
+    --primary-color: #e0e0e9;
+    --secondary-color: #fff;
+    --snake-color: #07ff0f;
+    --game-over-color: red;
+    --box-shadow-color: rgba(0, 0, 0, 0.1);
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
-    background-color: #e0e0e9;
     font-family: Arial, sans-serif;
-    background-image: linear-gradient(to bottom right, #e0e0e9, #fff);
+    background: linear-gradient(to bottom right, var(--primary-color), var(--secondary-color));
 }
 
 header {
@@ -22,7 +36,7 @@ header {
     background-color: rgba(220, 250, 240, 0.8);
     padding: 10px 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px var(--box-shadow-color);
 }
 
 #snake-color {
@@ -38,18 +52,18 @@ main {
 
 #gameCanvas {
     border: 1px solid #ccc;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px var(--box-shadow-color);
 }
 
 #playButton {
     padding: 10px 20px;
     font-size: 18px;
-    background-color: #07ff0f;
+    background-color: var(--snake-color);
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--box-shadow-color);
     transition: background-color 0.2s ease-in-out;
 }
 
@@ -62,12 +76,14 @@ main {
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    color: red;
+    color: var(--game-over-color);
     padding: 20px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--secondary-color);
+    box-shadow: 0 4px 6px var(--box-shadow-color);
+    max-width: 80%;
+    margin: 20px auto;
 }
 
 #game-over-message.show {
