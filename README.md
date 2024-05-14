@@ -10,10 +10,10 @@
 
 ## Features : 
 
-
-### <p align="center">You can change the color of the snake </p>
-### <p align="center">Sound when eat </p>
 ### <p align="center">Score</p>
+### <p align="center">You can change the color of the snake </p>
+### <p align="center">Available on PC, and possibly on mobile soon ?</p>
+### <p align="center">Change the snake's color every 10 points</p>
 
 
 ## Support : 
