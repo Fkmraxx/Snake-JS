@@ -1,9 +1,9 @@
 // Initialize the canvas and context
 const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const gridSize = 20;
-const gridWidth = canvas.width / gridSize;
-const gridHeight = canvas.height / gridSize;
+const canvasContext = canvas.getContext('2d');
+const GRID_SIZE = 20;
+const GRID_WIDTH = canvas.width / GRID_SIZE;
+const GRID_HEIGHT = canvas.height / GRID_SIZE;
 
 let snake = [
   { x: 10, y: 10 },
@@ -23,52 +23,49 @@ const eatSound = document.getElementById('eatSound');
 const snakeColorInput = document.getElementById('snake-color');
 
 snakeColorInput.addEventListener('input', () => {
-  ctx.fillStyle = snakeColorInput.value;
+  canvasContext.fillStyle = snakeColorInput.value;
 });
 
 function drawBackground() {
-  for (let i = 0; i < gridWidth; i++) {
-    for (let j = 0; j < gridHeight; j++) {
-      if ((i + j) % 2 === 0) {
-        ctx.fillStyle = 'white';
-      } else {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-      }
-      ctx.fillRect(i * gridSize, j * gridSize, gridSize, gridSize);
+  for (let i = 0; i < GRID_WIDTH; i++) {
+    for (let j = 0; j < GRID_HEIGHT; j++) {
+      canvasContext.fillStyle = (i + j) % 2 === 0 ? 'white' : 'rgba(0, 0, 0, 0.1)';
+      canvasContext.fillRect(i * GRID_SIZE, j * GRID_SIZE, GRID_SIZE, GRID_SIZE);
     }
   }
 }
 
 function getRandomColor() {
-  const colors = ['red', 'blue', 'green', 'yellow', 'purple'];
+  const colors = ['#FF0000', '#0000FF', '#008000', '#FFFF00', '#800080', '#C0C0C0', '#808080', '#808000', '#008080', '#800000', '#008000', '#000080', '#00FFFF', '#FF00FF', '#FFFF00', '#808000', '#008080', '#800080', '#808080', '#C0C0C0'];
   return colors[Math.floor(Math.random() * colors.length)];
 }
 
 function drawSnake() {
-  ctx.fillStyle = 'green';
-  snake.forEach((segment, index) => {
-    if (index === 0) {
-      ctx.fillStyle = snakeColorInput.value;
-    }
-    ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
+  canvasContext.fillStyle = snakeColorInput.value;
+  snake.forEach((segment) => {
+    canvasContext.fillRect(segment.x * GRID_SIZE, segment.y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
   });
 }
 
 function drawFood() {
-  ctx.fillStyle = 'red';
-  ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
+
+  // Draw the food circle
+  canvasContext.fillStyle = foodColor;
+  canvasContext.beginPath();
+  canvasContext.arc(food.x * GRID_SIZE + GRID_SIZE / 2, food.y * GRID_SIZE + GRID_SIZE / 2, GRID_SIZE / 2, 0, 2 * Math.PI);
+  canvasContext.fill();
 }
 
 function drawTongue() {
-  ctx.fillStyle = 'red';
-  ctx.fillRect(tongue.x * gridSize, tongue.y * gridSize, gridSize / 2, gridSize / 2);
+  canvasContext.fillStyle = 'red';
+  canvasContext.fillRect(tongue.x * GRID_SIZE, tongue.y * GRID_SIZE, GRID_SIZE / 2, GRID_SIZE / 2);
 }
 
 function updateTongue() {
-  tongue.x += tongue.dx;
+tongue.x += tongue.dx;
   tongue.y += tongue.dy;
 
-  if (tongue.x < 0 || tongue.x >= gridWidth || tongue.y < 0 || tongue.y >= gridHeight) {
+  if (tongue.x < 0 || tongue.x >= GRID_WIDTH || tongue.y < 0 || tongue.y >= GRID_HEIGHT) {
     tongue.dx = -tongue.dx;
     tongue.dy = -tongue.dy;
   }
@@ -95,22 +92,17 @@ function updateSnake() {
 }
 
 function generateFood() {
-  food = {
-    x: Math.floor(Math.random() * gridWidth),
-    y: Math.floor(Math.random() * gridHeight),
-  };
+  let newX, newY;
+  do {
+    newX = Math.floor(Math.random() * GRID_WIDTH);
+    newY = Math.floor(Math.random() * GRID_HEIGHT);
+  } while (snake.some((segment) => segment.x === newX && segment.y === newY));
+  food = { x: newX, y: newY };
 }
 
 function checkCollision() {
-  if (snake[0].x < 0 || snake[0].x >= gridWidth || snake[0].y < 0 || snake[0].y >= gridHeight) {
-    return true;
-  }
-  for (let i = 1; i < snake.length; i++) {
-    if (snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
-      return true;
-    }
-  }
-  return false;
+  return snake[0].x < 0 || snake[0].x >= GRID_WIDTH || snake[0].y < 0 || snake[0].y >= GRID_HEIGHT || snake.some((segment, index) => index !== 0 && segment.x === snake[0].x && segment.y === snake[0].y);
+  
 }
 
 function gameOver() {
@@ -135,7 +127,6 @@ function gameOver() {
   playButton.style.display = 'block';
 
   // Reset the score and position
-  score = 0;
   snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
   direction = { x: 1, y: 0 };
   scoreElement.innerText = `Score: ${score}`;
@@ -144,7 +135,7 @@ function gameOver() {
 
 
 function gameLoop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  canvasContext.clearRect(0, 0, canvas.width, canvas.height);
   drawBackground();
   drawSnake();
   drawFood();
@@ -155,7 +146,7 @@ function gameLoop() {
   } else {
     setTimeout(() => {
       requestAnimationFrame(gameLoop);
-    }, 100);
+    }, 80);
   }
 }
 
@@ -163,7 +154,7 @@ playButton.addEventListener('click', () => {
   const gameOverMessageElement = document.getElementById('game-over-message');
   gameOverMessageElement.parentNode.removeChild(gameOverMessageElement);
   // Restart the game
-  score = 0;
+  score = 0; // Reset the score
   snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
   direction = { x: 1, y: 0 };
   scoreElement.innerText = `Score: ${score}`;
